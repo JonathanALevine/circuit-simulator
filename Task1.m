@@ -1,20 +1,23 @@
-close all; 
-clc;  
-clear all; %intialization
+close all;  
+clear;
+
+set(0,'DefaultFigureWindowStyle','docked')
+
+addpath("stamps/")
 
 % Simulation params
 num_points = 1000;
 f_start = 0;
 f_end = 3e6;
 freqs = linspace(f_start, f_end, num_points);
-Vout = zeros(num_points);
+Vout = zeros(num_points, 1);
 
 % Initiliaze the G, C, b matrices
-n_nodes = 3;
+num_nodes = 3;
 global G C b;
-G = GetG(n_nodes);
-C = GetC(n_nodes);
-b = Getb(n_nodes);
+G = sparse(num_nodes, num_nodes);
+C = sparse(num_nodes, num_nodes);
+b = sparse(num_nodes, 1);
 
 % populate the matrices from the MNA
 output_node = 3;
