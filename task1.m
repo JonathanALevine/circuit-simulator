@@ -4,6 +4,7 @@ clear;
 set(0,'DefaultFigureWindowStyle','docked')
 
 addpath("stamps/")
+addpath("test-circuits/")
 
 % Simulation params
 num_points = 1000;
