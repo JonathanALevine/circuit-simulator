@@ -57,5 +57,4 @@ cap(16, 0, cap_val);
 
 res(16, 0, source_load_resistor);
 
-
 save('test-circuits/circuit4.mat', 'G', 'C', 'b')
