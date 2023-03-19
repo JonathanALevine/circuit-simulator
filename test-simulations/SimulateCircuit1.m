@@ -5,6 +5,9 @@ function SimulateCircuit1()
     
     load("circuit1.mat", 'G', 'C', 'b');
 
+    % The output node
+    output_node = 3;
+
     % Simulation params
     num_points = 1000;
     f_start = 0;
@@ -16,10 +19,12 @@ function SimulateCircuit1()
     % s = j*2pi*f
     for i=1:num_points
         s = 1i * 2* pi * freqs(i);
-        left_side = G + s*C;
-        right_side = b;
-        sols = left_side \ right_side;
-        Vout(i) = abs(sols(3));
+        A = G + s*C;
+        [L, U, P, Q] = lu(A, 0.01);
+        z = L \ (P*b);
+        y = U\z;
+        sols = Q*y;
+        Vout(i) = abs(sols(output_node));
     end
     
     figure('Name', 'Freq. Domain (circuit1)')
@@ -40,8 +45,8 @@ function SimulateCircuit1()
     
     x = A\b;
     
-    Vout_amp = abs(x(3));
-    Vout_phase = phase(x(3));
+    Vout_amp = abs(x(output_node));
+    Vout_phase = phase(x(output_node));
     
     Vout = Vout_amp*sin(2*pi*freq*t - Vout_phase);
     

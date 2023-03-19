@@ -1,11 +1,13 @@
 close all;  
 clear;
 
-set(0,'DefaultFigureWindowStyle','docked')
+set(0,'DefaultFigureWindowStyle','docked');
 
-addpath('test-simulations/')
+addpath('test-simulations/');
 
 % Simulate the first circuit
-SimulateCircuit1()
+SimulateCircuit1();
 
+SimulateCircuit2();
 
+SimulateCircuit3();

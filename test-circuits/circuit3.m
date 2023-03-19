@@ -12,15 +12,14 @@ b = sparse(num_nodes, 1);
 
 % populate the matrices from the MNA
 output_node = 4;
-cur(1, 0, 1);
-ind(1, 0, 0.799*10^(-9));
-cap(1, 0, 0.319*10^(-6));
-res(1, 0, 5);
-res(1, 2, 5);
-cap(2, 3, 63.72*10^(-12));
-cap(3, 0, 0.319*10^(-6));
-res(3, 0, 5);
-res(4, 5, 5);
-res(4, 0, 1000);
+vol(1, 0, 1);
+res(1, 2, 50);
+ind(2, 0, 0.3176*10^(-6));
+cap(2, 0, 0.319*10^(-6));
+ind(2, 3, 1.59*10^(-6));
+cap(3, 4, 6.372*10^(-9));
+ind(4, 0, 0.3176*10^(-6));
+cap(4, 0, 0.319*10^(-6));
+res(4, 0, 50);
 
-save('test-circuits/circuit2.mat', 'G', 'C', 'b')
+save('test-circuits/circuit3.mat', 'G', 'C', 'b')
