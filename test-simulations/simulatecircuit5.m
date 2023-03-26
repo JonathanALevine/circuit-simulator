@@ -1,20 +1,19 @@
-function SimulateCircuit4()
+function simulatecircuit5()
     addpath("stamps/");
     addpath("test-circuits/");
     
-    load("circuit4.mat", 'G', 'C', 'b');
+    load("circuit5.mat", 'G', 'C', 'b');
 
     % The output node
-    output_node = 12;
-    voltage_source_current_row = 17;
+    output_node = 10;
 
     % Simulation params
     num_points = 1000;
     f_start = 1;
-    f_end = 20*10^6;
+    f_end = 4*10^3;
     freqs = linspace(f_start, f_end, num_points);
     Vout = zeros(num_points, 1);
-    input_impedence = zeros(num_points, 1);
+    PhaseOut = zeros(num_points, 1);
     
     % Fequency domain solution
     % s = j*2pi*f
@@ -26,20 +25,18 @@ function SimulateCircuit4()
         y = U\z;
         sols = Q*y;
         Vout(i) = abs(sols(output_node));
-        input_impedence(i) = 1 / abs(sols(voltage_source_current_row));
+        PhaseOut(i) = phase(sols(output_node));
     end
     
-    figure('Name', 'Freq. Domain (circuit4)')
-    loglog(freqs, 20*log10(Vout));
-    ylim([-80 0]);
+    figure('Name', 'Freq. Domain (circuit5)')
+    plot(freqs, Vout);
     grid on;
     xlabel('Freq.')
-    ylabel('V_{out} (dB)')
+    ylabel('V_{out} (V)')
 
-    figure('Name', 'Input Impdence (circuit4)')
-    plot(freqs, input_impedence);
+    figure('Name', 'Phase. Domain (circuit5)')
+    plot(freqs, PhaseOut);
     grid on;
     xlabel('Freq.')
-    ylabel('Z_{input} (\Omega)')
-
+    ylabel('Phase (Deg.)')
 end

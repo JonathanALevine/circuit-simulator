@@ -1,18 +1,19 @@
-function SimulateCircuit3()
+function simulatecircuit2()
     addpath("stamps/");
     addpath("test-circuits/");
     
-    load("circuit3.mat", 'G', 'C', 'b');
+    load("circuit2.mat", 'G', 'C', 'b');
 
     % The output node
     output_node = 4;
 
     % Simulation params
-    num_points = 100000;
-    f_start = 1000;
-    f_end = 1*10^9;
+    num_points = 1000;
+    f_start = 0;
+    f_end = 20*10^6;
     freqs = linspace(f_start, f_end, num_points);
     Vout = zeros(num_points, 1);
+    phaseOut = zeros(num_points, 1);
     
     % Fequency domain solution
     % s = j*2pi*f
@@ -24,12 +25,18 @@ function SimulateCircuit3()
         y = U\z;
         sols = Q*y;
         Vout(i) = abs(sols(output_node));
+        phaseOut(i) = phase(sols(output_node));
     end
     
-    figure('Name', 'Freq. Domain (circuit3)')
-    semilogx(freqs, 20*log10(Vout));
+    figure('Name', 'Freq. Domain (circuit2)')
+    plot(freqs, Vout);
     grid on;
     xlabel('Freq.')
-    ylabel('V_{out} (dB)')
+    ylabel('|V at Node 4|')
 
+    figure('Name', 'Phase. (circuit2)')
+    plot(freqs, phaseOut)
+    grid on;
+    xlabel('Freq.')
+    ylabel('Phase')
 end

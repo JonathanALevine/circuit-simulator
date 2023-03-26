@@ -1,4 +1,4 @@
-function SimulateCircuit1()
+function simulatecircuit1()
 
     addpath("stamps/");
     addpath("test-circuits/");
