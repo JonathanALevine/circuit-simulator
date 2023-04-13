@@ -50,7 +50,7 @@ function simulatecircuit1()
     
     Vout = Vout_amp*sin(2*pi*freq*t - Vout_phase);
     
-    Vin = 10*sin(2*pi*freq*t);
+    Vin = 10*cos(2*pi*freq*t);
     
     figure('Name', 'Time Domain (circuit1)')
     plot(t, Vout)
