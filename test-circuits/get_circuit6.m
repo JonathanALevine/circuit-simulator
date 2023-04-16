@@ -1,4 +1,4 @@
-function [G, C, b] = getcircuit6(Ut)
+function [G, C, b] = get_circuit6(Ut)
     % this gets the MNA matrices of circuit 6 given an input signal Ut    
     % Initiliaze the G, C, b matrices
     num_nodes = 7;

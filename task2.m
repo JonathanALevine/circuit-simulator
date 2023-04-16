@@ -1,4 +1,4 @@
-close all;  
+close all;
 clear;
 
 set(0,'DefaultFigureWindowStyle','docked');
@@ -6,6 +6,9 @@ set(0,'DefaultFigureWindowStyle','docked');
 addpath('stamps/')
 addpath('test-simulations')
 
-simulatecircuit6_with_trap_rule;
+% part 1
+simulate_circuit6_with_trap_rule;
 
-simulatecircuit6_with_back_euler;
+simulate_circuit6_with_back_euler;
+
+% part 2

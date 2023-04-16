@@ -5,12 +5,12 @@ set(0,'DefaultFigureWindowStyle','docked');
 
 addpath('test-simulations/');
 
-simulatecircuit1;
+simulate_circuit1;
 
-simulatecircuit2;
+simulate_circuit2;
 
-simulatecircuit3;
+simulate_circuit3;
 
-simulatecircuit4;
+simulate_circuit4;
 
-simulatecircuit5;
+simulate_circuit5;

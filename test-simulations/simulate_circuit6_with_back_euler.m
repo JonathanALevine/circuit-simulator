@@ -1,3 +1,5 @@
+clear;
+
 h = 0.01e-9; %time step
 start_time = 0;
 end_time = 16e-9;
@@ -13,16 +15,16 @@ for n = 1:number_of_points
 end
 
 for n = 1:number_of_points-1
-    [G, C, b] = getcircuit6(U(t(n)));
-    [G1, C1, b1] = getcircuit6(U(t(n+1)));
-    % Solution for Trapezoidal Rule
-    left_side = G + 2/h*C;  
-    right_side = (2/h*C - G)*V + b + b1;
+    [G, C, b] = get_circuit6(U(t(n)));
+    [G1, C1, b1] = get_circuit6(U(t(n+1)));
+    % Solution for Backward Euler
+    left_side = G + 1/h*C;  
+    right_side = (1/h*C)*V + b1;
     V = left_side\right_side;
     vout(n) = V(7);
 end
 
-figure('Name', 'Circuit 6 (Trapezoidal Rule)')
+figure('Name', 'Circuit 6 (Backward Euler)')
 plot(t/(10^(-9)), Ut)
 hold on;
 plot(t/(10^(-9)), vout)
