@@ -1,4 +1,4 @@
-function [G, C, b] = get_circuit7(n1, n2)
+function [G, C, b] = get_circuit7(n1, n2, Ut)
     % This code generates an MNA matrix for a 2D mesh, constituted
     % of resistors % between n1 x n2 nodes with each node
     % connected to the ground by a capacitor.
@@ -7,8 +7,8 @@ function [G, C, b] = get_circuit7(n1, n2)
     %−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−
     % n1 = 8; %Width
     % n2 = 50; %Length
-    n = n1*(n2−1) + 2;
-    global G C b
+    n = n1*(n2-1) + 2;
+    global G C b;
     G = sparse(n,n);
     C = sparse(n,n);
     b = sparse(n,1);
@@ -19,14 +19,13 @@ function [G, C, b] = get_circuit7(n1, n2)
         for aa = 1:n1
             if bb == 1
                 node = 2;
-                node_r = 2+(bb−1)*n1+aa;
+                node_r = 2+(bb-1)*n1+aa;
             else
-                node = 2+(bb−2)*n1+aa;
+                node = 2+(bb-2)*n1+aa;
                 node_r = node + n1;
             end
             node_d = node + 1;
-            % Resistor connecting to the node to the right of ...
-            current node
+            % Resistor connecting to the node to the right of ... current node
             if bb < n2
                 res(node, node_r, r);
             end
@@ -39,7 +38,7 @@ function [G, C, b] = get_circuit7(n1, n2)
         end
     end
     % Source with source resistor are connected to the near end
-    vol(1, 0, 1);
+    vol(1, 0, Ut);
     res(1, 2, 50);
     %End
 end
