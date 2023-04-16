@@ -1,5 +1,4 @@
 clear;
-close all;
 
 addpath('helper-functions/')
 
@@ -40,7 +39,7 @@ for n = 1:number_of_points-1
     V_node100(n) = V(100);
 end
 
-figure('Name', 'Circuit 7 (Backward Euler)')
+figure('Name', 'Circuit 7 (Trapezoidal Euler)')
 plot(t/(10^(-9)), Ut)
 hold on;
 plot(t/(10^(-9)), V_node1);
