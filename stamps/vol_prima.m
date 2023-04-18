@@ -17,18 +17,19 @@ d = size(G, 1);
 % Add new row/column
 xr = d+1; 
 % Fill in the new row and column values
-b(xr) = val;
+
+b(xr) = -val;
 G(xr, xr) = 0;
 C(xr, xr) = 0;
 
 if (n1 ~= 0)
     G(n1,xr) = G(n1,xr)+1;
-    G(xr,n1) = G(xr,n1)+1;
+    G(xr,n1) = G(xr,n1)-1;
 end
 
 if (n2 ~= 0)
     G(n2,xr) = G(n2,xr)-1;
-    G(xr,n2) = G(xr,n2)-1;
+    G(xr,n2) = G(xr,n2)+1;
 end
 
 end

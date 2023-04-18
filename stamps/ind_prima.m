@@ -17,6 +17,7 @@ xr = d+1;      % new (extra)row/column
 b(xr) = 0;      % add new row
 G(xr,xr) = 0;   % add new row/column
 
+% C(xr,xr) = -val; before
 C(xr,xr) = +val;
 
 if (n1 ~= 0)
