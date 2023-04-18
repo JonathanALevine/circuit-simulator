@@ -3,5 +3,8 @@ clear;
 
 set(0,'DefaultFigureWindowStyle','docked');
 
-addpath('stamps/')
-addpath('test-simulations')
+% Question 1
+task3_question1
+
+% Question 2
+task3_question2
