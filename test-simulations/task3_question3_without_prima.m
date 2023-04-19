@@ -1,36 +1,33 @@
+close all;
 clear;
 
 addpath('stamps/')
 addpath('test-simulations')
 
-res_val = 10;
-res1_val = 20;
-res2_val = 50;
-cap_val = 10*10^(-9);
-output_node = 7;
+rval = 10;
+rin = 20;
+rout = 50;
+cval = 10*10^(-9);
+output_node = 6;
 
 global G C b;
-num_nodes = 7;
+num_nodes = 6;
 G = sparse(num_nodes, num_nodes);
 C = sparse(num_nodes, num_nodes);
 b = sparse(num_nodes , 1);
 
-cur(1, 0, 1);
-res(1, 0, res1_val);
-cap(1, 0, cap_val);
-res(1, 2, res_val);
-cap(2, 0, cap_val);
-res(2, 3, res_val);
-cap(3, 0, cap_val);
-res(3, 4, res_val);
-cap(4, 0, cap_val);
-res(4, 5, res_val);
-cap(5, 0, cap_val);
-res(5, 0, res1_val);
-res(3, 6, res_val);
-cap(6, 0, cap_val);
-res(6, 7, res_val);
-cap(7, 0, cap_val);
+vol(1, 0, 1);
+res(1, 2, rin);
+cap(2, 0, cval);
+res(2, 3, rval);
+cap(3, 0, cval);
+res(3, 4, rval);
+cap(4, 0, cval);
+res(4, 5, rval);
+cap(5, 0, cval);
+res(5, 6, rval);
+cap(6, 0, cval);
+res(6, 0, rout);
 
 % Simulation params
 num_points = 1000;
@@ -55,8 +52,37 @@ G + G'
 
 % Get the A and R matrices
 [A, R] = get_AR(G, C, b);
+q = 2;
+[Q, H] = arnoldi(A, R, q);
+
+H = ctranspose(Q)*A*Q;
+eig(H)
+
+sum_inner_products(Q)
+
+Gr = Q'*G*Q;
+Cr = Q'*C*Q;
+br = Q'*b;
+
+Gr + Gr'
+
+% Fequency domain solution
+Voutr_q2 = zeros(num_points, 1);
+for i=1:num_points
+    s = 1i * 2* pi * freqs(i);
+    Ar = Gr + s*Cr;
+    sols = Ar^(-1)*br; % sols (solutions) are z
+    x_app = Q*sols;
+    Voutr_q2(i) = abs(x_app(output_node));
+end
+
+% Get the A and R matrices
+[A, R] = get_AR(G, C, b);
 q = 3;
 [Q, H] = arnoldi(A, R, q);
+
+H = ctranspose(Q)*A*Q;
+eig(H)
 
 sum_inner_products(Q)
 
@@ -78,8 +104,11 @@ end
 
 % Get the A and R matrices
 [A, R] = get_AR(G, C, b);
-q = 5;
+q = 4;
 [Q, H] = arnoldi(A, R, q);
+
+H = ctranspose(Q)*A*Q
+eig(H)
 
 sum_inner_products(Q)
 
@@ -90,22 +119,26 @@ br = Q'*b;
 Gr + Gr'
 
 % Fequency domain solution
-Voutr_q5 = zeros(num_points, 1);
+Voutr_q4 = zeros(num_points, 1);
 for i=1:num_points
     s = 1i * 2* pi * freqs(i);
     Ar = Gr + s*Cr;
     sols = Ar^(-1)*br; % sols (solutions) are z
     x_app = Q*sols;
-    Voutr_q5(i) = abs(x_app(output_node));
+    Voutr_q4(i) = abs(x_app(output_node));
 end
 
 figure('Name', 'Time Domain (circuit1)')
 loglog(freqs, Vout)
 hold on
+loglog(freqs, Voutr_q2)
 loglog(freqs, Voutr_q3)
-loglog(freqs, Voutr_q5)
+loglog(freqs, Voutr_q4)
 hold off
 grid on;
-legend('Original MNA Formulation', 'Reduced Circuit For q=3', 'Reduced Circuit For q=5');
+legend('Original MNA Formulation', ...
+    'Reduced Circuit For q=2', ...
+    'Reduced Circuit For q=3', ...
+    'Reduced Circuit (q=4)');
 xlabel('Freq. (Hz)')
 ylabel('Vout (V)')
