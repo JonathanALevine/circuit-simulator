@@ -25,11 +25,12 @@ for i=1:num_points
     y = U\z;
     sols = Q*y;
     Vout(i) = abs(sols(output_node));
-    input_impedence(i) = 1 / abs(sols(voltage_source_current_row));
+    source_current = sols(voltage_source_current_row);
+    input_impedence(i) = 1 / abs(source_current);
 end
 
 figure('Name', 'Freq. Domain (circuit4)')
-loglog(freqs, 20*log10(Vout));
+semilogy(freqs, 20*log10(Vout));
 ylim([-80 0]);
 grid on;
 xlabel('Freq.')
