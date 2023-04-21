@@ -5,7 +5,7 @@ addpath('helper-functions/')
 n1 = 8;
 n2 = 50;
 
-h = 0.05e-9; % the time step
+h = 0.5e-9; % the time step
 start_time = 0;
 end_time = 20e-9;
 
@@ -40,12 +40,18 @@ for n = 1:number_of_points-1
 end
 
 figure('Name', 'Circuit 7 (Backward Euler)')
-plot(t/(10^(-9)), Ut)
+plot(t/(10^(-9)), Ut, LineWidth=2)
 hold on;
-plot(t/(10^(-9)), V_node1);
-plot(t/(10^(-9)), V_node100);
+plot(t/(10^(-9)), V_node1, LineWidth=2);
+plot(t/(10^(-9)), V_node100, LineWidth=2);
 hold off;
+legend('Input Signal', 'Node 1', 'Node 100')
 grid on;
+xlabel('Time (ns)')
+ylabel('Signal (V)')
+
+FN2 = 'figures/circuit7_back_euler';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
 
 % The input signal
 function val = source(t)

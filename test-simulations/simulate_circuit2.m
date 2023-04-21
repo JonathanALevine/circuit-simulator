@@ -33,8 +33,8 @@ grid on;
 xlabel('Freq.')
 ylabel('|V at Node 4|')
 
-figure('Name', 'Phase. (circuit2)')
-plot(freqs, phaseOut)
-grid on;
-xlabel('Freq.')
-ylabel('Phase')
+% figure('Name', 'Phase. (circuit2)')
+% plot(freqs, phaseOut)
+% grid on;
+% xlabel('Freq.')
+% ylabel('Phase')

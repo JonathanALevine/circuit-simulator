@@ -28,5 +28,8 @@ end
 figure('Name', 'Freq. Domain (circuit3)')
 semilogx(freqs, 20*log10(Vout));
 grid on;
-xlabel('Freq.')
+xlabel('Freq. (Hz)')
 ylabel('V_{out} (dB)')
+
+FN2 = 'figures/circuit3_freq_domain';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG

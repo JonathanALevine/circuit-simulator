@@ -24,12 +24,28 @@ for n = 1:number_of_points-1
     vout(n) = V(7);
 end
 
+% results from hspice
+% Set the file path and name
+file_path = 'circuit6.csv';
+% Read the file
+data = readtable(file_path);
+% Extract the columns
+t1 = data.freq;
+vout_hspice = data.vout;
+
 figure('Name', 'Circuit 6 (Backward Euler)')
-plot(t/(10^(-9)), Ut)
+plot(t/(10^(-9)), Ut, LineWidth=2)
 hold on;
-plot(t/(10^(-9)), vout)
+plot(t/(10^(-9)), vout, 'b--', LineWidth=3)
+plot(t1/(10^(-9)), vout_hspice, LineWidth=2)
+legend('Input Signal', 'MNA Solution (BE)', 'HSPICE')
 hold off;
 grid on;
+xlabel('Time (ns)')
+ylabel('Signal (V)')
+
+FN2 = 'figures/circuit6_back_euler';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
 
 % The input signal
 function val = U(t)

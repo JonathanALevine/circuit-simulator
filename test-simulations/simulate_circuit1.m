@@ -1,6 +1,3 @@
-addpath("stamps/");
-addpath("test-circuits/");
-
 load("circuit1.mat", 'G', 'C', 'b');
 
 % The output node
@@ -25,11 +22,29 @@ for i=1:num_points
     Vout(i) = abs(sols(output_node));
 end
 
+% results from hspice
+% Set the file path and name
+file_path = 'circuit1.csv';
+% Read the file
+data = readtable(file_path);
+% Extract the columns
+freq = data.freq;
+real_part = data.real;
+imag_part = data.im;
+Vout_hspice = sqrt(real_part.^2 + imag_part.^2);
+
 figure('Name', 'Freq. Domain (circuit1)')
-plot(freqs, Vout);
+plot(freqs, Vout, 'b--', LineWidth=3);
+hold on;
+plot(freq, Vout_hspice, LineWidth=2)
+hold off;
 grid on;
-xlabel('Freq.')
-ylabel('|V at Node 3|')
+legend('MNA Solution', 'HSPICE')
+xlabel('Freq. (Hz)')
+ylabel('|V at Node 3| (V)')
+
+FN2 = 'figures/circuit1_freq_domain';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
 
 % time-domain solution
 freq = 1*10^6;
@@ -51,10 +66,14 @@ Vout = Vout_amp*sin(2*pi*freq*t - Vout_phase);
 Vin = 10*cos(2*pi*freq*t);
 
 figure('Name', 'Time Domain (circuit1)')
-plot(t, Vout)
+plot(t/10^(-6), Vout, LineWidth=2)
 hold on
-plot(t, Vin)
+plot(t/10^(-6), Vin, LineWidth=2)
 hold off
 grid on;
-xlabel('Time (s)')
-ylabel('Signals')
+legend('Vout', 'Vin')
+xlabel('Time (\mu s)')
+ylabel('Signal (V)')
+
+FN2 = 'figures/circuit1_time_domain';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG

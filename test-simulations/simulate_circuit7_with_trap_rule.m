@@ -5,7 +5,7 @@ addpath('helper-functions/')
 n1 = 8;
 n2 = 50;
 
-h = 0.05e-9; % the time step
+h = 0.5e-9; % the time step
 start_time = 0;
 end_time = 20e-9;
 
@@ -27,7 +27,7 @@ for n = 1:number_of_points-1
     [G, C, b] = get_circuit7(n1, n2, source(t(n)));
     [G1, C1, b1] = get_circuit7(n1, n2, source(t(n+1)));
     % Solution for Trapezoidal Rule
-    left_side = G + 2/h*C;  
+    left_side = G + 2/h*C;
     right_side = (2/h*C - G)*V + b + b1;
 
     [L, U, P, Q] = lu(left_side, 0.01);
@@ -40,12 +40,18 @@ for n = 1:number_of_points-1
 end
 
 figure('Name', 'Circuit 7 (Trapezoidal Euler)')
-plot(t/(10^(-9)), Ut)
+plot(t/(10^(-9)), Ut, LineWidth=2)
 hold on;
-plot(t/(10^(-9)), V_node1);
-plot(t/(10^(-9)), V_node100);
+plot(t/(10^(-9)), V_node1, LineWidth=2);
+plot(t/(10^(-9)), V_node100, LineWidth=2);
 hold off;
+legend('Input Signal', 'Node 1', 'Node 100')
 grid on;
+xlabel('Time (ns)')
+ylabel('Signal (V)')
+
+FN2 = 'figures/circuit7_trap_rule';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
 
 % The input signal
 function val = source(t)

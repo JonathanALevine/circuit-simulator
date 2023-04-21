@@ -29,15 +29,52 @@ for i=1:num_points
     input_impedence(i) = 1 / abs(source_current);
 end
 
+% results from hspice
+% Set the file path and name
+file_path = 'circuit4.csv';
+% Read the file
+data = readtable(file_path);
+% Extract the columns
+freq1 = data.freq;
+real_part = data.real;
+imag_part = data.im;
+Vout_hspice = sqrt(real_part.^2 + imag_part.^2);
+
+% results from hspice
+% Set the file path and name
+file_path = 'circuit4_source_current.csv';
+% Read the file
+data = readtable(file_path);
+% Extract the columns
+freq2 = data.freq;
+real_part = data.real;
+imag_part = data.im;
+source_current_hspice = sqrt(real_part.^2 + imag_part.^2);
+input_impedence_hspice = 1./source_current_hspice;
+
 figure('Name', 'Freq. Domain (circuit4)')
-semilogy(freqs, 20*log10(Vout));
+loglog(freqs, 20*log10(Vout), 'b--', LineWidth=3);
 ylim([-80 0]);
+hold on;
+loglog(freq1, 20*log10(Vout_hspice), LineWidth=2)
+hold off;
 grid on;
-xlabel('Freq.')
+legend('MNA Solution', 'HSPICE')
+xlabel('Freq. (Hz)')
 ylabel('V_{out} (dB)')
 
+FN2 = 'figures/circuit4_freq_domain';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
+
 figure('Name', 'Input Impdence (circuit4)')
-plot(freqs, input_impedence);
+plot(freqs, input_impedence, 'b--', LineWidth=3);
+hold on;
+plot(freq2, input_impedence_hspice, LineWidth=2);
+hold off
 grid on;
-xlabel('Freq.')
+legend('MNA Solution', 'HSPICE')
+xlabel('Freq. (Hz)')
 ylabel('Z_{input} (\Omega)')
+
+FN2 = 'figures/circuit4_input_impedence';
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG

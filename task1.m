@@ -7,8 +7,6 @@ addpath('test-simulations/');
 
 simulate_circuit1;
 
-simulate_circuit2;
-
 simulate_circuit3;
 
 simulate_circuit4;
