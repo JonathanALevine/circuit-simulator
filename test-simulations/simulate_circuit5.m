@@ -14,6 +14,31 @@ freqs = linspace(f_start, f_end, num_points);
 Vout = zeros(num_points, 1);
 PhaseOut = zeros(num_points, 1);
 
+A = G + 1i*C;
+
+figure('Name', 'Spy(A)')
+spy(A)
+FN2 = 'figures/spy_A';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
+
+A = G + s*C;
+[L, U, P, Q] = lu(A, 0.01);
+
+figure('Name', 'Spy(L)')
+spy(L)
+FN2 = 'figures/spy_L';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
+
+figure('Name', 'Spy(U)')
+spy(U)
+FN2 = 'figures/spy_U';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
+
+figure('Name', 'Spy(LU)')
+spy(L+U)
+FN2 = 'figures/spy_LU';   
+print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
+
 % Fequency domain solution
 % s = j*2pi*f
 for i=1:num_points
