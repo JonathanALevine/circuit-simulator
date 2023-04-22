@@ -42,4 +42,5 @@ Q = [q1 q2]
 
 q = 2;
 [Q, H] = arnoldi(A, R, q)
+sum_inner_products(Q)
 

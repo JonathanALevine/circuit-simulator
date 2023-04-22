@@ -86,6 +86,8 @@ sum_inner_products(Q)
 Gr = Q'*G*Q;
 Cr = Q'*C*Q;
 br = Q'*b;
+[Ar, Rr] = get_AR(sparse(Gr), sparse(Cr), sparse(br));
+
 
 Gr + Gr'
 
