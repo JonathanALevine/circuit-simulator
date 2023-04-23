@@ -1,38 +1,30 @@
 close all;
 clear;
 
-addpath('stamps/')
-addpath('test-simulations')
+set(0,'DefaultFigureWindowStyle','docked');
 
-rval = 10;
-rin = 20;
-rout = 50;
-cval = 10*10^(-9);
-output_node = 6;
+% Get the MNA matrices
+n1 = 8;
+n2 = 32;
+[G, C, b, n_out] = rlc_mesh(n1, n2);
+output_node = n_out;
 
-global G C b;
-num_nodes = 6;
-G = sparse(num_nodes, num_nodes);
-C = sparse(num_nodes, num_nodes);
-b = sparse(num_nodes , 1);
+figure('Name', 'spy(G)')
+spy(G)
 
-vol_prima(1, 0, 1);
-res(1, 2, rin);
-cap(2, 0, cval);
-res(2, 3, rval);
-cap(3, 0, cval);
-res(3, 4, rval);
-cap(4, 0, cval);
-res(4, 5, rval);
-cap(5, 0, cval);
-res(5, 6, rval);
-cap(6, 0, cval);
-res(6, 0, rout);
+% FN2 = 'figures/spy(G)';   
+% print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
+% 
+figure('Name', 'spy(C)')
+spy(C)
 
-% Simulation params
+% FN2 = 'figures/spy(C)';   
+% print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
+
+% simulation params
 num_points = 1000;
-f_start = 10*10^3;
-f_end = 10*10^6;
+f_start = 0;
+f_end = 1*10^9;
 freqs = linspace(f_start, f_end, num_points);
 Vout = zeros(num_points, 1);
 
@@ -48,15 +40,10 @@ for i=1:num_points
     Vout(i) = abs(sols(output_node));
 end
 
-G + G'
-
-% Get the A and R matrices
+% Reduced model for q=10
 [A, R] = get_AR(G, C, b);
-q = 2;
+q = 10;
 [Q, H] = arnoldi(A, R, q);
-
-H = ctranspose(Q)*A*Q;
-eig(H)
 
 sum_inner_products(Q)
 
@@ -67,22 +54,19 @@ br = Q'*b;
 Gr + Gr'
 
 % Fequency domain solution
-Voutr_q2 = zeros(num_points, 1);
+Voutr_q10 = zeros(num_points, 1);
 for i=1:num_points
     s = 1i * 2* pi * freqs(i);
     Ar = Gr + s*Cr;
     sols = Ar^(-1)*br; % sols (solutions) are z
     x_app = Q*sols;
-    Voutr_q2(i) = abs(x_app(output_node));
+    Voutr_q10(i) = abs(x_app(output_node));
 end
 
-% Get the A and R matrices
+% Reduced model for q=10
 [A, R] = get_AR(G, C, b);
-q = 3;
+q = 25;
 [Q, H] = arnoldi(A, R, q);
-
-H = ctranspose(Q)*A*Q;
-eig(H)
 
 sum_inner_products(Q)
 
@@ -93,22 +77,19 @@ br = Q'*b;
 Gr + Gr'
 
 % Fequency domain solution
-Voutr_q3 = zeros(num_points, 1);
+Voutr_q25 = zeros(num_points, 1);
 for i=1:num_points
     s = 1i * 2* pi * freqs(i);
     Ar = Gr + s*Cr;
     sols = Ar^(-1)*br; % sols (solutions) are z
     x_app = Q*sols;
-    Voutr_q3(i) = abs(x_app(output_node));
+    Voutr_q25(i) = abs(x_app(output_node));
 end
 
-% Get the A and R matrices
+% Reduced model for q=10
 [A, R] = get_AR(G, C, b);
-q = 4;
+q = 40;
 [Q, H] = arnoldi(A, R, q);
-
-H = ctranspose(Q)*A*Q;
-eig(H)
 
 sum_inner_products(Q)
 
@@ -119,26 +100,30 @@ br = Q'*b;
 Gr + Gr'
 
 % Fequency domain solution
-Voutr_q4 = zeros(num_points, 1);
+Voutr_q40 = zeros(num_points, 1);
 for i=1:num_points
     s = 1i * 2* pi * freqs(i);
     Ar = Gr + s*Cr;
     sols = Ar^(-1)*br; % sols (solutions) are z
     x_app = Q*sols;
-    Voutr_q4(i) = abs(x_app(output_node));
+    Voutr_q40(i) = abs(x_app(output_node));
 end
 
-figure('Name', 'Time Domain (circuit1)')
-loglog(freqs, Vout)
+figure('Name', 'Time Domain (rlc mesh circuit)')
+plot(freqs/10^9, Vout, 'b--', LineWidth=5)
 hold on
-loglog(freqs, Voutr_q2)
-loglog(freqs, Voutr_q3)
-loglog(freqs, Voutr_q4)
+plot(freqs/10^9, Voutr_q10, LineWidth=2)
+plot(freqs/10^9, Voutr_q25, LineWidth=2)
+plot(freqs/10^9, Voutr_q40, LineWidth=2)
 hold off
 grid on;
 legend('Original MNA Formulation', ...
-    'Reduced Circuit (q=2)', ...
-    'Reduced Circuit (q=3)', ...
-    'Reduced Circuit (q=4)');
-xlabel('Freq. (Hz)')
+    'Reduced Circuit (q=10)', ...
+    'Reduced Circuit (q=25)', ...
+    'Reduced Circuit (q=40)');
+xlabel('Freq. (GHz)')
 ylabel('Vout (V)')
+
+% uncomment to save the fig
+% FN2 = 'figures/rlc_mesh_circuit';   
+% print(gcf, '-dpng', '-r600', FN2);  %Save graph in PNG
